@@ -70,7 +70,7 @@ function getMostCommonGenres(books) {
 
     //if genre is found in array of genres, then it will add 1 to that object's count
     if(result === true){
-      let object = mostCommonGenres.find((genre) => genre.name === bookGenre);
+      let object = mostCommonGenres.find((genre) => genre.name === bookGenre); //**NATALE**maybe filter() can be used here
       object.count += 1;
     }
     /*if genre is not found in array of genres, then it will be added to array of objects.
@@ -85,7 +85,7 @@ function getMostCommonGenres(books) {
   //sort method is used to sort the objects based on their count from greatest to least
   mostCommonGenres.sort((genreA, genreB) => (genreA.count < genreB.count ? 1 : -1));
   //console.log(mostCommonGenres);
-  
+
   /*use of helper function to return an array with max of 5 objects*/
   orderedArray = certainLengthArray(mostCommonGenres, 5);
   //console.log(orderedArray);

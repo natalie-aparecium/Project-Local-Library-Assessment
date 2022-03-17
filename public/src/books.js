@@ -7,6 +7,7 @@ function findAuthorById(authors, id) {
 
 /*returns the book object that has the matching ID*/
 function findBookById(books, id) {
+  //use find() method to find the book whose id matches the given id
   return books.find((book) => book.id === id);
 }
 
@@ -16,13 +17,22 @@ function partitionBooksByBorrowedStatus(books) {
   let partitionArray = [];
   let booksCheckedOut = [];
   let booksReturned = [];
-  let bookInfo = {};
+  //let bookInfo = {};
 
-  books.forEach((book) => {
-    bookInfo = {...book};
+  //the filter method will bulid an array with the items whose first borrows returned transaction is false (has not been checked out)
+  booksCheckedOut = books.filter((book) => book.borrows[0].returned === false);
+
+  //console.log(booksCheckedOut);
+
+  //the filter method will bulid an array with the items whose first borrows returned transaction is true (has been returned)
+  booksReturned = books.filter((book) => book.borrows[0].returned === true);
+
+  /* ^^the code below was exchanged to use the filter method (shown in the code above)
+    books.forEach((book) => {                                           
+    bookInfo = {...book};                                                 
     const borrowed = book.borrows;
 
-    let checkedOut;
+    //let checkedOut;
 
     borrowed.forEach((borrow) => {
       checkedOut = borrowed.find((borrow) => borrow.returned === false)
@@ -37,7 +47,8 @@ function partitionBooksByBorrowedStatus(books) {
       booksCheckedOut.push(bookInfo);
     }
 
-  });
+
+  }); */
 
   //console.log(booksCheckedOut);
   //console.log("XXX");
@@ -55,8 +66,10 @@ However, each account object should include the `returned` entry
 from the corresponding transaction object in the `borrows` array. */
 function getBorrowersForBook(book, accounts) {
   const { borrows } = book;
-  //const borrowed = book.borrows;  <--- works the same as code below
+  //const borrowed = book.borrows;  <--- works the same as code above
 
+  /*used the function map and find to find the list of borrowers for the book 
+   by matching if the accounts.id is equal to the id given */
   const renters = borrows.map(({ id, returned })=> {
 
     const account = accounts.find(account => account.id === id);
@@ -64,12 +77,13 @@ function getBorrowersForBook(book, accounts) {
     return { ...account, returned, }; 
   });
 
+  /*used the sort function to bring the result into alphabetical order */
   return renters.sort((borrowA, borrowB) => { 
     const companyA = borrowA.company; 
     const companyB = borrowB.company; 
     return companyA.localeCompare(companyB);
 
-  }).slice(0, 10); 
+  }).slice(0, 10); /*used the slice function to return the output according to the test case. */
 
 }
 
